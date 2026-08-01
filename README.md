@@ -1,10 +1,3 @@
-design decisions:
-did not put cvv in table
-recipient wallet not an fk because user can send to other accounts not in database
-wallet and wallet_address separated because user should have multiple addresses in a single wallet
-
-
-
 # Fintech DB Design 💳⚡
 
 A robust, relational database architecture designed for fintech and crypto-wallet management platforms. Built using **SQLAlchemy 2.0 ORM**, **PostgreSQL**, **Alembic**, and **Docker Compose**.
@@ -131,16 +124,15 @@ alembic downgrade -1
 
 ## 🗄️ Connecting pgAdmin to PostgreSQL
 
-1. Open **`http://localhost:5050`** in your browser and log in with `admin@admin.com` / `root`.
+1. Open **`http://localhost:5050`** in your browser and log in with your pgAdmin credentials set in `docker-compose.yml`:
+   * **Email:** `admin@admin.com` *(or your `PGADMIN_DEFAULT_EMAIL`)*
+   * **Password:** *(your `PGADMIN_DEFAULT_PASSWORD`)*
 2. Click **Add New Server**.
 3. Under the **General** tab, set a name (e.g., `Fintech Local DB`).
-4. Under the **Connection** tab, enter:
-* **Host name/address:** `db` *(or `postgres-epic`)*
-* **Port:** `5432`
-* **Maintenance database:** `db_design`
-* **Username:** `root`
-* **Password:** `root`
-
-
+4. Under the **Connection** tab, enter the database configuration:
+   * **Host name/address:** `db` *(Docker service name)* or `postgres-epic`
+   * **Port:** `5432`
+   * **Maintenance database:** `db_design` *(matches `POSTGRES_DB`)*
+   * **Username:** *(matches `POSTGRES_USER` in `.env` / `docker-compose.yml`)*
+   * **Password:** *(matches `POSTGRES_PASSWORD` in `.env` / `docker-compose.yml`)*
 5. Click **Save**.
-
