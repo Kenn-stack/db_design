@@ -26,7 +26,7 @@ The database schema was architected around security, flexibility, and real-world
 The database models core fintech entities including user authentication, profiles, crypto wallets, blockchain addresses, transactions, and virtual/debit card details.
 
 
-![Entity Relationship Diagram] (media/ERD.png)
+![Entity Relationship Diagram](media/ERD.png)
  
 
 ### Core Entities & Relationships
@@ -67,7 +67,7 @@ git clone [https://github.com/Kenn-stack/db_design.git](https://github.com/Kenn-
 cd db_design
 
 # Install dependencies
-```bash
+
 uv sync
 
 ```
@@ -90,9 +90,6 @@ This starts two services:
 
 ---
 
-
----
-
 ## 🗄️ Database Initialization & Migrations
 
 ### Schema Evolution (Alembic)
@@ -104,8 +101,8 @@ alembic revision -m "initial_migration" --autogenerate
 
 ```
 
-![Initial Migration] (media/initial_migration.png)
-![Initial Migration (pgadmin)] (media/initial_migration_pgadmin.png)
+![Initial Migration](media/initial_migration.png)
+![Initial Migration (pgadmin)](media/initial_migration_pgadmin.png)
 
 
 # Apply pending migrations
@@ -116,8 +113,8 @@ alembic upgrade head
 
 ```
 
-![Upgrade Head] (media/upgrade_head.png)
-![Upgrade Head (pgadmin)] (media/upgrade_head_pgadmin.png)
+![Upgrade Head](media/upgrade_head.png)
+![Upgrade Head (pgadmin)](media/upgrade_head_pgadmin.png)
 
 
 # Rollback a migration step
@@ -126,8 +123,8 @@ alembic downgrade -1
 
 ```
 
-![Downgrade] (media/downgrade.png)
-![Downgrade] (media/downgrade_pgadmin.png)
+![Downgrade](media/downgrade.png)
+![Downgrade](media/downgrade_pgadmin.png)
 
 
 ---
