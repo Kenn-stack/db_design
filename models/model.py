@@ -40,7 +40,7 @@ class User(Base):
     )
 
 
-    user_profile: Mapped["UserProfile"] = relationship(back_populates="user")
+    user_profile: Mapped["UserProfile"] = relationship(back_populates="user",  uselist=False)
     wallet: Mapped[List["Wallet"]] = relationship(back_populates="user")
     transaction: Mapped[List["Transaction"]] = relationship(back_populates="user")
 
@@ -49,7 +49,7 @@ class UserProfile(Base):
     __tablename__ = "user_profiles"
 
     id: Mapped[int] = mapped_column(primary_key=True)
-    user_id: Mapped[int] = mapped_column(ForeignKey("users.id"), nullable=False)
+    user_id: Mapped[int] = mapped_column(ForeignKey("users.id"), unique=True, nullable=False)    
     first_name: Mapped[Optional[str]] = mapped_column(String(255))
     last_name: Mapped[Optional[str]] = mapped_column(String(255))
 
@@ -81,7 +81,7 @@ class WalletAddress(Base):
 
     id: Mapped[int] = mapped_column(primary_key=True)
     wallet_id: Mapped[int] = mapped_column(ForeignKey("wallets.id"), nullable=False)
-    blockchain: Mapped[str] = mapped_column(String(5), nullable=False)
+    blockchain: Mapped[str] = mapped_column(String(50), nullable=False)
     public_address: Mapped[str] = mapped_column(String(255), nullable=False)
     derivation_path: Mapped[Optional[str]] = mapped_column(String(255))
  
@@ -95,7 +95,7 @@ class Transaction(Base):
     id: Mapped[int] = mapped_column(primary_key=True)
     user_id: Mapped[int] = mapped_column(ForeignKey("users.id"), nullable=False)
     sender_wallet: Mapped[int] = mapped_column(ForeignKey("wallet_addresses.id"), nullable=False)
-    recipient_wallet: Mapped[int] = mapped_column(String(255), nullable=False)
+    recipient_wallet: Mapped[str] = mapped_column(String(255), nullable=False)
     transaction_hash: Mapped[str] = mapped_column(String(255), nullable=False)
     amount: Mapped[float] = mapped_column(nullable=False)
     timestamp: Mapped[datetime] = mapped_column(

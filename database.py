@@ -1,4 +1,4 @@
-from .model import Base
+from models.model import Base
 from sqlalchemy import create_engine
 from sqlalchemy.orm import sessionmaker
 import os
@@ -14,4 +14,4 @@ engine = create_engine(db_url, echo=True)
 SessionLocal = sessionmaker(bind=engine, expire_on_commit=False)
 
 # Create tables in PostgreSQL
-Base.metadata.create_all(engine)
+# Base.metadata.create_all(engine)
