@@ -22,7 +22,7 @@ def reset_db():
 
 def insert_user() -> list[User]:
     """Generates and flushes a batch of 50 mock User instances."""
-    users = UserFactory.create_batch(50)
+    users = UserFactory.create_batch(1000)
     return users
 
 def insert_user_profile(users) -> list[UserProfile]:
@@ -40,7 +40,7 @@ def insert_wallets(users) -> list[Wallet]:
     """Generates 100 Wallet instances randomly distributed across the provided users."""
     wallets = []
 
-    for _ in range(100):
+    for _ in range(2000):
         # Randomly assigns each wallet to an existing user
         wallet = WalletFactory(user=random.choice(users))
         wallets.append(wallet)
@@ -52,7 +52,7 @@ def insert_wallet_addresses(wallets) -> list[WalletAddress]:
     """Generates 150 blockchain WalletAddress instances randomly assigned to existing wallets."""
     wallet_addresses = []
 
-    for _ in range(150):
+    for _ in range(3000):
         # Randomly assigns each address record to a parent wallet
         wallet_address = WalletAddressFactory(wallet=random.choice(wallets))
         wallet_addresses.append(wallet_address)
@@ -64,7 +64,7 @@ def insert_transactions(users, wallet_addresses) -> list[Transaction]:
     """Generates 200 Transaction records ensuring user ownership matches the sender's wallet address."""
     transactions = []
 
-    for _ in range(200):
+    for _ in range(12000):
         wallet_address = random.choice(wallet_addresses)
 
         # Binds the transaction user directly to the owner of the selected sender wallet address

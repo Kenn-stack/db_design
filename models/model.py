@@ -1,7 +1,7 @@
-from datetime import datetime
+from datetime import date, datetime
 from enum import Enum
 from typing import List, Optional
-from sqlalchemy import CheckConstraint, ForeignKey, SmallInteger, String, func
+from sqlalchemy import CheckConstraint, ForeignKey, Index, SmallInteger, String, func
 from sqlalchemy import Enum as SQLEnum
 from sqlalchemy.orm import DeclarativeBase, Mapped, mapped_column, relationship
 
@@ -16,6 +16,13 @@ class TransactionStatusType(str, Enum):
   PENDING = "PENDING"
   CONFIRMED = "CONFIRMED"
   FAILED = "FAILED"
+
+
+class KYCStatusType(str, Enum):
+    NOT_STARTED = "NOT_STARTED"
+    PENDING = "PENDING"
+    VERIFIED = "VERIFIED"
+    REJECTED = "REJECTED"
 
 
 class Base(DeclarativeBase):
@@ -54,9 +61,12 @@ class User(Base):
   wallet: Mapped[List["Wallet"]] = relationship(back_populates="user")
   transaction: Mapped[List["Transaction"]] = relationship(back_populates="user")
 
+  def __repr__(self) -> str:
+    return f"<User id={self.id}, email={self.email!r}>"
+
 
 class UserProfile(Base):
-  """Stores personal profile information associated with a specific user."""
+  """Stores personal identity, KYC compliance, address, and localization preferences for a user."""
 
   __tablename__ = "user_profiles"
 
@@ -70,11 +80,54 @@ class UserProfile(Base):
       nullable=False,
       comment="Foreign key linking the profile to its owning user",
   )
+
+  # Basic Identity
   first_name: Mapped[Optional[str]] = mapped_column(
-      String(255), comment="Legal or given first name of the user"
+      String(255), comment="Legal or given first name"
   )
   last_name: Mapped[Optional[str]] = mapped_column(
-      String(255), comment="Legal or family last name of the user"
+      String(255), comment="Legal or family last name"
+  )
+  phone_number: Mapped[Optional[str]] = mapped_column(
+      String(30), unique=True, comment="E.164 formatted phone number for MFA"
+  )
+  date_of_birth: Mapped[Optional[date]] = mapped_column(
+      comment="Legal date of birth for age verification"
+  )
+
+  # KYC & Compliance
+  country_code: Mapped[Optional[str]] = mapped_column(
+      String(3), comment="ISO 3166-1 alpha-3 country code (e.g. NGA, USA)"
+  )
+  kyc_status: Mapped[KYCStatusType] = mapped_column(
+      SQLEnum(KYCStatusType, native_enum=False),
+      default=KYCStatusType.NOT_STARTED,
+      nullable=False,
+      comment="Identity verification status",
+  )
+  kyc_level: Mapped[int] = mapped_column(
+      SmallInteger, default=0, nullable=False, comment="Verification tier level"
+  )
+
+  # Address Details
+  address_line1: Mapped[Optional[str]] = mapped_column(String(255))
+  city: Mapped[Optional[str]] = mapped_column(String(100))
+  postal_code: Mapped[Optional[str]] = mapped_column(String(20))
+
+  # Preferences & Localization
+  preferred_fiat_currency: Mapped[str] = mapped_column(
+      String(3), default="USD", nullable=False, comment="Display fiat currency"
+  )
+  timezone: Mapped[str] = mapped_column(
+      String(50), default="UTC", nullable=False, comment="User preferred timezone"
+  )
+
+  # Timestamps
+  updated_at: Mapped[datetime] = mapped_column(
+      server_default=func.now(),
+      onupdate=func.now(),
+      nullable=False,
+      comment="UTC timestamp when profile was last updated",
   )
 
   user: Mapped["User"] = relationship(back_populates="user_profile")
@@ -151,6 +204,11 @@ class WalletAddress(Base):
       back_populates="wallet_address"
   )
 
+  __table_args__ = (
+      # Standard composite index on (blockchain, id)
+      Index("idx_wallet_addresses_blockchain_id", "blockchain", "id"),
+  )
+
 
 class Transaction(Base):
   """Records financial transactions executed across platform wallets."""
@@ -205,6 +263,15 @@ class Transaction(Base):
       back_populates="transaction"
   )
   user: Mapped["User"] = relationship(back_populates="transaction")
+
+  __table_args__ = (
+      # Covering index on sender_wallet that INCLUDES status and fee payload columns
+      Index(
+          "idx_transactions_sender_status_fee",
+          "sender_wallet",
+          postgresql_include=["status", "fee"],
+      ),
+  )
 
 
 class Card(Base):

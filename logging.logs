@@ -1,0 +1,147 @@
+2026-08-13 10:39:18,357 - fintech_app - ERROR - An error occurred during database insert. Rolling back... Details: (psycopg2.errors.UniqueViolation) duplicate key value violates unique constraint "users_email_key"
+DETAIL:  Key (email)=(rachel.rodriguez@example.com) already exists.
+
+[SQL: INSERT INTO users (email, password) VALUES (%(email)s, %(password)s) RETURNING users.id, users.created_at]
+[parameters: {'email': 'rachel.rodriguez@example.com', 'password': 'scrypt:32768:8:1$Sr3QyXH0SN1Rm5qT$62ac6571db3fe97498a30d332c92b98734f2130b2f76534888434c33a77d7790520a7ab44873d953d791fa7f71791a70585837aecdb012390b56963eddb14733'}]
+(Background on this error at: https://sqlalche.me/e/20/gkpj)
+Traceback (most recent call last):
+  File "/home/kene/Code/Data-Epic/fintech_db_design/.venv/lib/python3.13/site-packages/sqlalchemy/engine/base.py", line 1969, in _exec_single_context
+    self.dialect.do_execute(
+    ~~~~~~~~~~~~~~~~~~~~~~~^
+        cursor, str_statement, effective_parameters, context
+        ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+    )
+    ^
+  File "/home/kene/Code/Data-Epic/fintech_db_design/.venv/lib/python3.13/site-packages/sqlalchemy/engine/default.py", line 952, in do_execute
+    cursor.execute(statement, parameters)
+    ~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^
+psycopg2.errors.UniqueViolation: duplicate key value violates unique constraint "users_email_key"
+DETAIL:  Key (email)=(rachel.rodriguez@example.com) already exists.
+
+
+The above exception was the direct cause of the following exception:
+
+Traceback (most recent call last):
+  File "/home/kene/Code/Data-Epic/fintech_db_design/mock_data/insert.py", line 89, in <module>
+    users = insert_user()
+  File "/home/kene/Code/Data-Epic/fintech_db_design/mock_data/insert.py", line 25, in insert_user
+    users = UserFactory.create_batch(1000)
+  File "/home/kene/Code/Data-Epic/fintech_db_design/.venv/lib/python3.13/site-packages/factory/base.py", line 553, in create_batch
+    return [cls.create(**kwargs) for _ in range(size)]
+            ~~~~~~~~~~^^^^^^^^^^
+  File "/home/kene/Code/Data-Epic/fintech_db_design/.venv/lib/python3.13/site-packages/factory/base.py", line 539, in create
+    return cls._generate(enums.CREATE_STRATEGY, kwargs)
+           ~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/home/kene/Code/Data-Epic/fintech_db_design/.venv/lib/python3.13/site-packages/factory/alchemy.py", line 60, in _generate
+    return super()._generate(strategy, params)
+           ~~~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^
+  File "/home/kene/Code/Data-Epic/fintech_db_design/.venv/lib/python3.13/site-packages/factory/base.py", line 468, in _generate
+    return step.build()
+           ~~~~~~~~~~^^
+  File "/home/kene/Code/Data-Epic/fintech_db_design/.venv/lib/python3.13/site-packages/factory/builder.py", line 274, in build
+    instance = self.factory_meta.instantiate(
+        step=step,
+        args=args,
+        kwargs=kwargs,
+    )
+  File "/home/kene/Code/Data-Epic/fintech_db_design/.venv/lib/python3.13/site-packages/factory/base.py", line 320, in instantiate
+    return self.factory._create(model, *args, **kwargs)
+           ~~~~~~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/home/kene/Code/Data-Epic/fintech_db_design/.venv/lib/python3.13/site-packages/factory/alchemy.py", line 116, in _create
+    return cls._save(model_class, session, args, kwargs)
+           ~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/home/kene/Code/Data-Epic/fintech_db_design/.venv/lib/python3.13/site-packages/factory/alchemy.py", line 125, in _save
+    session.flush()
+    ~~~~~~~~~~~~~^^
+  File "/home/kene/Code/Data-Epic/fintech_db_design/.venv/lib/python3.13/site-packages/sqlalchemy/orm/session.py", line 4353, in flush
+    self._flush(objects)
+    ~~~~~~~~~~~^^^^^^^^^
+  File "/home/kene/Code/Data-Epic/fintech_db_design/.venv/lib/python3.13/site-packages/sqlalchemy/orm/session.py", line 4488, in _flush
+    with util.safe_reraise():
+         ~~~~~~~~~~~~~~~~~^^
+  File "/home/kene/Code/Data-Epic/fintech_db_design/.venv/lib/python3.13/site-packages/sqlalchemy/util/langhelpers.py", line 122, in __exit__
+    raise exc_value.with_traceback(exc_tb)
+  File "/home/kene/Code/Data-Epic/fintech_db_design/.venv/lib/python3.13/site-packages/sqlalchemy/orm/session.py", line 4449, in _flush
+    flush_context.execute()
+    ~~~~~~~~~~~~~~~~~~~~~^^
+  File "/home/kene/Code/Data-Epic/fintech_db_design/.venv/lib/python3.13/site-packages/sqlalchemy/orm/unitofwork.py", line 465, in execute
+    rec.execute(self)
+    ~~~~~~~~~~~^^^^^^
+  File "/home/kene/Code/Data-Epic/fintech_db_design/.venv/lib/python3.13/site-packages/sqlalchemy/orm/unitofwork.py", line 641, in execute
+    util.preloaded.orm_persistence.save_obj(
+    ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~^
+        self.mapper,
+        ^^^^^^^^^^^^
+        uow.states_for_mapper_hierarchy(self.mapper, False, False),
+        ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+        uow,
+        ^^^^
+    )
+    ^
+  File "/home/kene/Code/Data-Epic/fintech_db_design/.venv/lib/python3.13/site-packages/sqlalchemy/orm/persistence.py", line 94, in save_obj
+    _emit_insert_statements(
+    ~~~~~~~~~~~~~~~~~~~~~~~^
+        base_mapper,
+        ^^^^^^^^^^^^
+    ...<3 lines>...
+        insert,
+        ^^^^^^^
+    )
+    ^
+  File "/home/kene/Code/Data-Epic/fintech_db_design/.venv/lib/python3.13/site-packages/sqlalchemy/orm/persistence.py", line 1234, in _emit_insert_statements
+    result = connection.execute(
+        statement,
+        params,
+        execution_options=execution_options,
+    )
+  File "/home/kene/Code/Data-Epic/fintech_db_design/.venv/lib/python3.13/site-packages/sqlalchemy/engine/base.py", line 1421, in execute
+    return meth(
+        self,
+        distilled_parameters,
+        execution_options or NO_OPTIONS,
+    )
+  File "/home/kene/Code/Data-Epic/fintech_db_design/.venv/lib/python3.13/site-packages/sqlalchemy/sql/elements.py", line 526, in _execute_on_connection
+    return connection._execute_clauseelement(
+           ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~^
+        self, distilled_params, execution_options
+        ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+    )
+    ^
+  File "/home/kene/Code/Data-Epic/fintech_db_design/.venv/lib/python3.13/site-packages/sqlalchemy/engine/base.py", line 1643, in _execute_clauseelement
+    ret = self._execute_context(
+        dialect,
+    ...<8 lines>...
+        cache_hit=cache_hit,
+    )
+  File "/home/kene/Code/Data-Epic/fintech_db_design/.venv/lib/python3.13/site-packages/sqlalchemy/engine/base.py", line 1848, in _execute_context
+    return self._exec_single_context(
+           ~~~~~~~~~~~~~~~~~~~~~~~~~^
+        dialect, context, statement, parameters
+        ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+    )
+    ^
+  File "/home/kene/Code/Data-Epic/fintech_db_design/.venv/lib/python3.13/site-packages/sqlalchemy/engine/base.py", line 1988, in _exec_single_context
+    self._handle_dbapi_exception(
+    ~~~~~~~~~~~~~~~~~~~~~~~~~~~~^
+        e, str_statement, effective_parameters, cursor, context
+        ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+    )
+    ^
+  File "/home/kene/Code/Data-Epic/fintech_db_design/.venv/lib/python3.13/site-packages/sqlalchemy/engine/base.py", line 2365, in _handle_dbapi_exception
+    raise sqlalchemy_exception.with_traceback(exc_info[2]) from e
+  File "/home/kene/Code/Data-Epic/fintech_db_design/.venv/lib/python3.13/site-packages/sqlalchemy/engine/base.py", line 1969, in _exec_single_context
+    self.dialect.do_execute(
+    ~~~~~~~~~~~~~~~~~~~~~~~^
+        cursor, str_statement, effective_parameters, context
+        ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+    )
+    ^
+  File "/home/kene/Code/Data-Epic/fintech_db_design/.venv/lib/python3.13/site-packages/sqlalchemy/engine/default.py", line 952, in do_execute
+    cursor.execute(statement, parameters)
+    ~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^
+sqlalchemy.exc.IntegrityError: (psycopg2.errors.UniqueViolation) duplicate key value violates unique constraint "users_email_key"
+DETAIL:  Key (email)=(rachel.rodriguez@example.com) already exists.
+
+[SQL: INSERT INTO users (email, password) VALUES (%(email)s, %(password)s) RETURNING users.id, users.created_at]
+[parameters: {'email': 'rachel.rodriguez@example.com', 'password': 'scrypt:32768:8:1$Sr3QyXH0SN1Rm5qT$62ac6571db3fe97498a30d332c92b98734f2130b2f76534888434c33a77d7790520a7ab44873d953d791fa7f71791a70585837aecdb012390b56963eddb14733'}]
+(Background on this error at: https://sqlalche.me/e/20/gkpj)

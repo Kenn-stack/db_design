@@ -1,4 +1,3 @@
-from models.model import Base
 from sqlalchemy import create_engine
 from sqlalchemy.orm import sessionmaker
 import os

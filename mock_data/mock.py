@@ -8,7 +8,7 @@ from faker import Faker
 
 from werkzeug.security import generate_password_hash
 
-from models.model import StatusType, Transaction, TransactionStatusType, User, UserProfile, Wallet, WalletAddress
+from models.model import KYCStatusType, StatusType, Transaction, TransactionStatusType, User, UserProfile, Wallet, WalletAddress
 from mock_data.utils import generate_steady_timestamp
 from database import SessionLocal
 
@@ -33,12 +33,14 @@ class UserFactory(BaseFactory):
         model = User
 
     # Generates email address matching fake user names to keep user profile data consistent
-    email = factory.LazyAttribute(
-            lambda o: f"{fake.first_name().lower()}.{fake.last_name().lower()}@example.com"
+    email = factory.Sequence(
+      lambda n: (
+          f"{fake.first_name().lower()}.{fake.last_name().lower()}{n}@example.com"
+      )
     )    
     # Hashes generated password string using standard Werkzeug security utilities
     password = factory.LazyAttribute(
-            lambda o: generate_password_hash(fake.password())
+            lambda o: generate_password_hash("password123")
     )
 
 
@@ -52,12 +54,53 @@ class UserProfileFactory(BaseFactory):
 
     # Derives first name directly from the generated user email local-part
     first_name = factory.LazyAttribute(
-        lambda o: o.user.email.split("@")[0].split(".")[0].capitalize()
-    )
-    # Derives last name directly from the generated user email local-part
+      lambda o: (
+          "".join(filter(str.isalpha, o.user.email.split("@")[0].split(".")[0]))
+          .capitalize()
+      )
+  )
     last_name = factory.LazyAttribute(
-        lambda o: o.user.email.split("@")[0].split(".")[1].capitalize()
+      lambda o: (
+          "".join(filter(str.isalpha, o.user.email.split("@")[0].split(".")[1]))
+          .capitalize()
+      )
+    )    
+    phone_number = factory.Sequence(lambda n: f"+1555{n:07d}")
+    # Generates realistic dates of birth for adults (ages 18 to 65)
+    date_of_birth = factory.LazyFunction(
+        lambda: fake.date_of_birth(minimum_age=18, maximum_age=65)
     )
+
+    # KYC & Compliance
+    country_code = factory.Iterator(["NGA", "USA", "GBR", "CAN", "DEU", "KEN"])
+    kyc_status = factory.Iterator([
+        KYCStatusType.NOT_STARTED,
+        KYCStatusType.PENDING,
+        KYCStatusType.VERIFIED,
+        KYCStatusType.REJECTED,
+    ])
+    kyc_level = factory.LazyAttribute(
+        lambda o: 0
+        if o.kyc_status == KYCStatusType.NOT_STARTED
+        else random.choice([1, 2, 3])
+    )
+
+    # Address Details
+    address_line1 = factory.LazyFunction(fake.street_address)
+    city = factory.LazyFunction(fake.city)
+    postal_code = factory.LazyFunction(fake.postcode)
+
+    # Preferences & Localization
+    preferred_fiat_currency = factory.Iterator(["USD", "EUR", "GBP", "NGN"])
+    timezone = factory.Iterator([
+        "UTC",
+        "Africa/Lagos",
+        "America/New_York",
+        "Europe/London",
+    ])
+
+    # Updated At (server_default handles this in DB, but factory can generate timestamp)
+    updated_at = factory.LazyFunction(datetime.now)
 
 
 class WalletFactory(BaseFactory):

@@ -136,3 +136,10 @@ alembic downgrade -1
    * **Username:** *(matches `POSTGRES_USER` in `.env` / `docker-compose.yml`)*
    * **Password:** *(matches `POSTGRES_PASSWORD` in `.env` / `docker-compose.yml`)*
 5. Click **Save**.
+
+
+---
+## Week 3 Screenshots
+![Without Index](media/without_index.png)
+![With Index](media/with_index.png)
+
