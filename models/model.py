@@ -158,6 +158,11 @@ class Wallet(Base):
       nullable=False,
       comment="Operational status of the wallet: ACTIVE, IN REVIEW, or INACTIVE",
   )
+  balance: Mapped[float] = mapped_column(
+      default=0.0,
+      nullable=False,
+      comment="Current total balance of the wallet in base units",
+  )
   created_at: Mapped[datetime] = mapped_column(
       server_default=func.now(),
       nullable=False,
@@ -200,9 +205,16 @@ class WalletAddress(Base):
   )
 
   wallet: Mapped["Wallet"] = relationship(back_populates="wallet_address")
-  transaction: Mapped[List["Transaction"]] = relationship(
-      back_populates="wallet_address"
-  )
+  sent_transactions: Mapped[list["Transaction"]] = relationship(
+        "Transaction",
+        foreign_keys="[Transaction.sender_wallet]",
+        back_populates="sender",
+    )
+  received_transactions: Mapped[list["Transaction"]] = relationship(
+        "Transaction",
+        foreign_keys="[Transaction.recipient_wallet]",
+        back_populates="recipient",
+    )
 
   __table_args__ = (
       # Standard composite index on (blockchain, id)
@@ -229,10 +241,10 @@ class Transaction(Base):
       nullable=False,
       comment="Foreign key pointing to the originating sender's wallet address record",
   )
-  recipient_wallet: Mapped[str] = mapped_column(
-      String(255),
+  recipient_wallet: Mapped[int] = mapped_column(
+      ForeignKey("wallet_addresses.id"),
       nullable=False,
-      comment="Public address of the destination recipient",
+      comment="Foreign key pointing to the destination recipient's wallet address record",
   )
   transaction_hash: Mapped[str] = mapped_column(
       String(255),
@@ -257,11 +269,17 @@ class Transaction(Base):
       default=TransactionStatusType.PENDING,
       nullable=False,
       comment="Current execution state: PENDING, CONFIRMED, or FAILED",
-  )
-
-  wallet_address: Mapped["WalletAddress"] = relationship(
-      back_populates="transaction"
-  )
+    )
+  sender: Mapped["WalletAddress"] = relationship(
+        "WalletAddress",
+        foreign_keys=[sender_wallet],
+        back_populates="sent_transactions",
+    )
+  recipient: Mapped["WalletAddress"] = relationship(
+        "WalletAddress",
+        foreign_keys=[recipient_wallet],
+        back_populates="received_transactions",
+    )  
   user: Mapped["User"] = relationship(back_populates="transaction")
 
   __table_args__ = (

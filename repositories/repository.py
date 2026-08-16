@@ -136,32 +136,38 @@ class TransactionRepository(BaseRepository[Transaction]):
         super().__init__(model_cls=Transaction, session=session)
 
 
-    def transfer(self, amount, sender_id, recipient_id):
+    def transfer(self, user_id: int, amount: float, sender_wallet_address: str, recipient_wallet_address: str):
         """Handles the transfer of funds between two wallets."""
+        fee = amount * 0.02  # 2% fee
         try:
-            from_wallet = self.session.get(Wallet, sender_id)
-            to_wallet = self.session.get(Wallet, recipient_id)
+            from_wallet_address = self.session.scalars(select(WalletAddress).where(WalletAddress.public_address == sender_wallet_address)).one_or_none()
+            to_wallet_address = self.session.scalars(select(WalletAddress).where(WalletAddress.public_address == recipient_wallet_address)).one_or_none()
+            from_wallet = self.session.get(Wallet, from_wallet_address.wallet_id)
+            to_wallet = self.session.get(Wallet, to_wallet_address.wallet_id)
             if not from_wallet or not to_wallet:
                 raise ValueError("One or both wallets do not exist.")
 
-            if from_wallet.balance < amount:
+            if from_wallet.balance < amount+fee:
                 raise ValueError("Insufficient funds in the source wallet.")
 
             # Deduct from source wallet
-            from_wallet.balance -= amount
+            from_wallet.balance -= amount + fee
             # Add to destination wallet
             to_wallet.balance += amount
 
             # Create a transaction record
             transaction = Transaction(
+                user_id=user_id,
+                fee=fee,
+                transaction_hash=f"tx_{from_wallet.id}_{to_wallet.id}_{amount}",
                 amount=amount,
-                from_wallet_id=from_wallet.id,
-                to_wallet_id=to_wallet.id,
-                status=TransactionStatusType.COMPLETED
+                sender_wallet=sender_wallet_address,
+                recipient_wallet=recipient_wallet_address,
+                status=TransactionStatusType.CONFIRMED
             )
             self.session.add(transaction)
             self.session.commit()
-            logger.info(f"Transferred {amount} from Wallet {from_wallet.id} to Wallet {to_wallet.id}")
+            logger.info(f"Transferred {amount} from Wallet {sender_wallet_address} to Wallet {recipient_wallet_address}")
             return transaction
         except Exception as e:
             self.session.rollback()

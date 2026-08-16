@@ -145,3 +145,608 @@ DETAIL:  Key (email)=(rachel.rodriguez@example.com) already exists.
 [SQL: INSERT INTO users (email, password) VALUES (%(email)s, %(password)s) RETURNING users.id, users.created_at]
 [parameters: {'email': 'rachel.rodriguez@example.com', 'password': 'scrypt:32768:8:1$Sr3QyXH0SN1Rm5qT$62ac6571db3fe97498a30d332c92b98734f2130b2f76534888434c33a77d7790520a7ab44873d953d791fa7f71791a70585837aecdb012390b56963eddb14733'}]
 (Background on this error at: https://sqlalche.me/e/20/gkpj)
+2026-08-16 03:15:06,780 - fintech_app - ERROR - Error during transfer: 'NoneType' object has no attribute 'wallet'
+Traceback (most recent call last):
+  File "/home/kene/Code/Data-Epic/fintech_db_design/repositories/repository.py", line 143, in transfer
+    from_wallet = self.session.get(WalletAddress, sender_wallet_address).wallet
+                  ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+AttributeError: 'NoneType' object has no attribute 'wallet'
+2026-08-16 03:17:34,460 - fintech_app - ERROR - Error during transfer: 'NoneType' object has no attribute 'wallet'
+Traceback (most recent call last):
+  File "/home/kene/Code/Data-Epic/fintech_db_design/repositories/repository.py", line 143, in transfer
+    from_wallet = self.session.get(WalletAddress, sender_wallet_address).wallet
+                  ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+AttributeError: 'NoneType' object has no attribute 'wallet'
+2026-08-16 03:21:54,212 - fintech_app - ERROR - Error during transfer: 'NoneType' object has no attribute 'wallet_id'
+Traceback (most recent call last):
+  File "/home/kene/Code/Data-Epic/fintech_db_design/repositories/repository.py", line 143, in transfer
+    from_wallet = self.session.get(Wallet, self.session.get(WalletAddress, sender_wallet_address).wallet_id)
+                                           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+AttributeError: 'NoneType' object has no attribute 'wallet_id'
+2026-08-16 03:31:47,531 - fintech_app - ERROR - Error fetching User with ID 2000000000: One or more mappers failed to initialize - can't proceed with initialization of other mappers. Triggering mapper: 'Mapper[WalletAddress(wallet_addresses)]'. Original exception was: Could not determine join condition between parent/child tables on relationship WalletAddress.transaction - there are multiple foreign key paths linking the tables.  Specify the 'foreign_keys' argument, providing a list of those columns which should be counted as containing a foreign key reference to the parent table.
+Traceback (most recent call last):
+  File "/home/kene/Code/Data-Epic/fintech_db_design/repositories/repository.py", line 44, in get_by_id
+    record = self.session.get(self.model_cls, record_id)
+  File "/home/kene/Code/Data-Epic/fintech_db_design/.venv/lib/python3.13/site-packages/sqlalchemy/orm/session.py", line 3702, in get
+    return self._get_impl(
+           ~~~~~~~~~~~~~~^
+        entity,
+        ^^^^^^^
+    ...<7 lines>...
+        bind_arguments=bind_arguments,
+        ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+    )
+    ^
+  File "/home/kene/Code/Data-Epic/fintech_db_design/.venv/lib/python3.13/site-packages/sqlalchemy/orm/session.py", line 3881, in _get_impl
+    return db_load_fn(
+        self,
+    ...<5 lines>...
+        bind_arguments=bind_arguments,
+    )
+  File "/home/kene/Code/Data-Epic/fintech_db_design/.venv/lib/python3.13/site-packages/sqlalchemy/orm/loading.py", line 695, in load_on_pk_identity
+    session.execute(
+    ~~~~~~~~~~~~~~~^
+        q,
+        ^^
+    ...<2 lines>...
+        bind_arguments=bind_arguments,
+        ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+    )
+    ^
+  File "/home/kene/Code/Data-Epic/fintech_db_design/.venv/lib/python3.13/site-packages/sqlalchemy/orm/session.py", line 2373, in execute
+    return self._execute_internal(
+           ~~~~~~~~~~~~~~~~~~~~~~^
+        statement,
+        ^^^^^^^^^^
+    ...<4 lines>...
+        _add_event=_add_event,
+        ^^^^^^^^^^^^^^^^^^^^^^
+    )
+    ^
+  File "/home/kene/Code/Data-Epic/fintech_db_design/.venv/lib/python3.13/site-packages/sqlalchemy/orm/session.py", line 2271, in _execute_internal
+    result: Result[Any] = compile_state_cls.orm_execute_statement(
+                          ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~^
+        self,
+        ^^^^^
+    ...<4 lines>...
+        conn,
+        ^^^^^
+    )
+    ^
+  File "/home/kene/Code/Data-Epic/fintech_db_design/.venv/lib/python3.13/site-packages/sqlalchemy/orm/context.py", line 306, in orm_execute_statement
+    result = conn.execute(
+        statement, params or {}, execution_options=execution_options
+    )
+  File "/home/kene/Code/Data-Epic/fintech_db_design/.venv/lib/python3.13/site-packages/sqlalchemy/engine/base.py", line 1421, in execute
+    return meth(
+        self,
+        distilled_parameters,
+        execution_options or NO_OPTIONS,
+    )
+  File "/home/kene/Code/Data-Epic/fintech_db_design/.venv/lib/python3.13/site-packages/sqlalchemy/sql/elements.py", line 526, in _execute_on_connection
+    return connection._execute_clauseelement(
+           ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~^
+        self, distilled_params, execution_options
+        ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+    )
+    ^
+  File "/home/kene/Code/Data-Epic/fintech_db_design/.venv/lib/python3.13/site-packages/sqlalchemy/engine/base.py", line 1635, in _execute_clauseelement
+    compiled_sql, extracted_params, cache_hit = elem._compile_w_cache(
+                                                ~~~~~~~~~~~~~~~~~~~~~^
+        dialect=dialect,
+        ^^^^^^^^^^^^^^^^
+    ...<4 lines>...
+        linting=self.dialect.compiler_linting | compiler.WARN_LINTING,
+        ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+    )
+    ^
+  File "/home/kene/Code/Data-Epic/fintech_db_design/.venv/lib/python3.13/site-packages/sqlalchemy/sql/elements.py", line 715, in _compile_w_cache
+    compiled_sql = self._compiler(
+        dialect,
+    ...<4 lines>...
+        **kw,
+    )
+  File "/home/kene/Code/Data-Epic/fintech_db_design/.venv/lib/python3.13/site-packages/sqlalchemy/sql/elements.py", line 323, in _compiler
+    return dialect.statement_compiler(dialect, self, **kw)
+           ~~~~~~~~~~~~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^
+  File "/home/kene/Code/Data-Epic/fintech_db_design/.venv/lib/python3.13/site-packages/sqlalchemy/sql/compiler.py", line 1462, in __init__
+    Compiled.__init__(self, dialect, statement, **kwargs)
+    ~~~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/home/kene/Code/Data-Epic/fintech_db_design/.venv/lib/python3.13/site-packages/sqlalchemy/sql/compiler.py", line 902, in __init__
+    self.string = self.process(self.statement, **compile_kwargs)
+                  ~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/home/kene/Code/Data-Epic/fintech_db_design/.venv/lib/python3.13/site-packages/sqlalchemy/sql/compiler.py", line 948, in process
+    return obj._compiler_dispatch(self, **kwargs)
+           ~~~~~~~~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^
+  File "/home/kene/Code/Data-Epic/fintech_db_design/.venv/lib/python3.13/site-packages/sqlalchemy/sql/visitors.py", line 138, in _compiler_dispatch
+    return meth(self, **kw)  # type: ignore  # noqa: E501
+  File "/home/kene/Code/Data-Epic/fintech_db_design/.venv/lib/python3.13/site-packages/sqlalchemy/sql/compiler.py", line 4811, in visit_select
+    compile_state = select_stmt._compile_state_factory(
+        select_stmt, self, **kwargs
+    )
+  File "/home/kene/Code/Data-Epic/fintech_db_design/.venv/lib/python3.13/site-packages/sqlalchemy/sql/base.py", line 774, in create_for_statement
+    return klass.create_for_statement(statement, compiler, **kw)
+           ~~~~~~~~~~~~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/home/kene/Code/Data-Epic/fintech_db_design/.venv/lib/python3.13/site-packages/sqlalchemy/orm/context.py", line 447, in create_for_statement
+    return cls._create_orm_context(
+           ~~~~~~~~~~~~~~~~~~~~~~~^
+        cast("Union[Select, FromStatement]", statement),
+        ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+    ...<2 lines>...
+        **kw,
+        ^^^^^
+    )
+    ^
+  File "/home/kene/Code/Data-Epic/fintech_db_design/.venv/lib/python3.13/site-packages/sqlalchemy/orm/context.py", line 1175, in _create_orm_context
+    _QueryEntity.to_compile_state(
+    ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~^
+        self,
+        ^^^^^
+    ...<2 lines>...
+        is_current_entities=True,
+        ^^^^^^^^^^^^^^^^^^^^^^^^^
+    )
+    ^
+  File "/home/kene/Code/Data-Epic/fintech_db_design/.venv/lib/python3.13/site-packages/sqlalchemy/orm/context.py", line 2628, in to_compile_state
+    _MapperEntity(
+    ~~~~~~~~~~~~~^
+        compile_state,
+        ^^^^^^^^^^^^^^
+    ...<2 lines>...
+        is_current_entities,
+        ^^^^^^^^^^^^^^^^^^^^
+    )
+    ^
+  File "/home/kene/Code/Data-Epic/fintech_db_design/.venv/lib/python3.13/site-packages/sqlalchemy/orm/context.py", line 2708, in __init__
+    entity._post_inspect
+  File "/home/kene/Code/Data-Epic/fintech_db_design/.venv/lib/python3.13/site-packages/sqlalchemy/util/langhelpers.py", line 1234, in __get__
+    obj.__dict__[self.__name__] = result = self.fget(obj)
+                                           ~~~~~~~~~^^^^^
+  File "/home/kene/Code/Data-Epic/fintech_db_design/.venv/lib/python3.13/site-packages/sqlalchemy/orm/mapper.py", line 2734, in _post_inspect
+    self._check_configure()
+    ~~~~~~~~~~~~~~~~~~~~~^^
+  File "/home/kene/Code/Data-Epic/fintech_db_design/.venv/lib/python3.13/site-packages/sqlalchemy/orm/mapper.py", line 2411, in _check_configure
+    _configure_registries({self.registry}, cascade=True)
+    ~~~~~~~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/home/kene/Code/Data-Epic/fintech_db_design/.venv/lib/python3.13/site-packages/sqlalchemy/orm/mapper.py", line 4228, in _configure_registries
+    _do_configure_registries(registries, cascade)
+    ~~~~~~~~~~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^
+  File "/home/kene/Code/Data-Epic/fintech_db_design/.venv/lib/python3.13/site-packages/sqlalchemy/orm/mapper.py", line 4265, in _do_configure_registries
+    raise e
+sqlalchemy.exc.InvalidRequestError: One or more mappers failed to initialize - can't proceed with initialization of other mappers. Triggering mapper: 'Mapper[WalletAddress(wallet_addresses)]'. Original exception was: Could not determine join condition between parent/child tables on relationship WalletAddress.transaction - there are multiple foreign key paths linking the tables.  Specify the 'foreign_keys' argument, providing a list of those columns which should be counted as containing a foreign key reference to the parent table.
+2026-08-16 03:32:39,294 - fintech_app - ERROR - Error fetching User with ID 2000000000: One or more mappers failed to initialize - can't proceed with initialization of other mappers. Triggering mapper: 'Mapper[WalletAddress(wallet_addresses)]'. Original exception was: Could not determine join condition between parent/child tables on relationship WalletAddress.transaction - there are multiple foreign key paths linking the tables.  Specify the 'foreign_keys' argument, providing a list of those columns which should be counted as containing a foreign key reference to the parent table.
+Traceback (most recent call last):
+  File "/home/kene/Code/Data-Epic/fintech_db_design/repositories/repository.py", line 44, in get_by_id
+    record = self.session.get(self.model_cls, record_id)
+  File "/home/kene/Code/Data-Epic/fintech_db_design/.venv/lib/python3.13/site-packages/sqlalchemy/orm/session.py", line 3702, in get
+    return self._get_impl(
+           ~~~~~~~~~~~~~~^
+        entity,
+        ^^^^^^^
+    ...<7 lines>...
+        bind_arguments=bind_arguments,
+        ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+    )
+    ^
+  File "/home/kene/Code/Data-Epic/fintech_db_design/.venv/lib/python3.13/site-packages/sqlalchemy/orm/session.py", line 3881, in _get_impl
+    return db_load_fn(
+        self,
+    ...<5 lines>...
+        bind_arguments=bind_arguments,
+    )
+  File "/home/kene/Code/Data-Epic/fintech_db_design/.venv/lib/python3.13/site-packages/sqlalchemy/orm/loading.py", line 695, in load_on_pk_identity
+    session.execute(
+    ~~~~~~~~~~~~~~~^
+        q,
+        ^^
+    ...<2 lines>...
+        bind_arguments=bind_arguments,
+        ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+    )
+    ^
+  File "/home/kene/Code/Data-Epic/fintech_db_design/.venv/lib/python3.13/site-packages/sqlalchemy/orm/session.py", line 2373, in execute
+    return self._execute_internal(
+           ~~~~~~~~~~~~~~~~~~~~~~^
+        statement,
+        ^^^^^^^^^^
+    ...<4 lines>...
+        _add_event=_add_event,
+        ^^^^^^^^^^^^^^^^^^^^^^
+    )
+    ^
+  File "/home/kene/Code/Data-Epic/fintech_db_design/.venv/lib/python3.13/site-packages/sqlalchemy/orm/session.py", line 2271, in _execute_internal
+    result: Result[Any] = compile_state_cls.orm_execute_statement(
+                          ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~^
+        self,
+        ^^^^^
+    ...<4 lines>...
+        conn,
+        ^^^^^
+    )
+    ^
+  File "/home/kene/Code/Data-Epic/fintech_db_design/.venv/lib/python3.13/site-packages/sqlalchemy/orm/context.py", line 306, in orm_execute_statement
+    result = conn.execute(
+        statement, params or {}, execution_options=execution_options
+    )
+  File "/home/kene/Code/Data-Epic/fintech_db_design/.venv/lib/python3.13/site-packages/sqlalchemy/engine/base.py", line 1421, in execute
+    return meth(
+        self,
+        distilled_parameters,
+        execution_options or NO_OPTIONS,
+    )
+  File "/home/kene/Code/Data-Epic/fintech_db_design/.venv/lib/python3.13/site-packages/sqlalchemy/sql/elements.py", line 526, in _execute_on_connection
+    return connection._execute_clauseelement(
+           ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~^
+        self, distilled_params, execution_options
+        ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+    )
+    ^
+  File "/home/kene/Code/Data-Epic/fintech_db_design/.venv/lib/python3.13/site-packages/sqlalchemy/engine/base.py", line 1635, in _execute_clauseelement
+    compiled_sql, extracted_params, cache_hit = elem._compile_w_cache(
+                                                ~~~~~~~~~~~~~~~~~~~~~^
+        dialect=dialect,
+        ^^^^^^^^^^^^^^^^
+    ...<4 lines>...
+        linting=self.dialect.compiler_linting | compiler.WARN_LINTING,
+        ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+    )
+    ^
+  File "/home/kene/Code/Data-Epic/fintech_db_design/.venv/lib/python3.13/site-packages/sqlalchemy/sql/elements.py", line 715, in _compile_w_cache
+    compiled_sql = self._compiler(
+        dialect,
+    ...<4 lines>...
+        **kw,
+    )
+  File "/home/kene/Code/Data-Epic/fintech_db_design/.venv/lib/python3.13/site-packages/sqlalchemy/sql/elements.py", line 323, in _compiler
+    return dialect.statement_compiler(dialect, self, **kw)
+           ~~~~~~~~~~~~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^
+  File "/home/kene/Code/Data-Epic/fintech_db_design/.venv/lib/python3.13/site-packages/sqlalchemy/sql/compiler.py", line 1462, in __init__
+    Compiled.__init__(self, dialect, statement, **kwargs)
+    ~~~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/home/kene/Code/Data-Epic/fintech_db_design/.venv/lib/python3.13/site-packages/sqlalchemy/sql/compiler.py", line 902, in __init__
+    self.string = self.process(self.statement, **compile_kwargs)
+                  ~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/home/kene/Code/Data-Epic/fintech_db_design/.venv/lib/python3.13/site-packages/sqlalchemy/sql/compiler.py", line 948, in process
+    return obj._compiler_dispatch(self, **kwargs)
+           ~~~~~~~~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^
+  File "/home/kene/Code/Data-Epic/fintech_db_design/.venv/lib/python3.13/site-packages/sqlalchemy/sql/visitors.py", line 138, in _compiler_dispatch
+    return meth(self, **kw)  # type: ignore  # noqa: E501
+  File "/home/kene/Code/Data-Epic/fintech_db_design/.venv/lib/python3.13/site-packages/sqlalchemy/sql/compiler.py", line 4811, in visit_select
+    compile_state = select_stmt._compile_state_factory(
+        select_stmt, self, **kwargs
+    )
+  File "/home/kene/Code/Data-Epic/fintech_db_design/.venv/lib/python3.13/site-packages/sqlalchemy/sql/base.py", line 774, in create_for_statement
+    return klass.create_for_statement(statement, compiler, **kw)
+           ~~~~~~~~~~~~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/home/kene/Code/Data-Epic/fintech_db_design/.venv/lib/python3.13/site-packages/sqlalchemy/orm/context.py", line 447, in create_for_statement
+    return cls._create_orm_context(
+           ~~~~~~~~~~~~~~~~~~~~~~~^
+        cast("Union[Select, FromStatement]", statement),
+        ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+    ...<2 lines>...
+        **kw,
+        ^^^^^
+    )
+    ^
+  File "/home/kene/Code/Data-Epic/fintech_db_design/.venv/lib/python3.13/site-packages/sqlalchemy/orm/context.py", line 1175, in _create_orm_context
+    _QueryEntity.to_compile_state(
+    ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~^
+        self,
+        ^^^^^
+    ...<2 lines>...
+        is_current_entities=True,
+        ^^^^^^^^^^^^^^^^^^^^^^^^^
+    )
+    ^
+  File "/home/kene/Code/Data-Epic/fintech_db_design/.venv/lib/python3.13/site-packages/sqlalchemy/orm/context.py", line 2628, in to_compile_state
+    _MapperEntity(
+    ~~~~~~~~~~~~~^
+        compile_state,
+        ^^^^^^^^^^^^^^
+    ...<2 lines>...
+        is_current_entities,
+        ^^^^^^^^^^^^^^^^^^^^
+    )
+    ^
+  File "/home/kene/Code/Data-Epic/fintech_db_design/.venv/lib/python3.13/site-packages/sqlalchemy/orm/context.py", line 2708, in __init__
+    entity._post_inspect
+  File "/home/kene/Code/Data-Epic/fintech_db_design/.venv/lib/python3.13/site-packages/sqlalchemy/util/langhelpers.py", line 1234, in __get__
+    obj.__dict__[self.__name__] = result = self.fget(obj)
+                                           ~~~~~~~~~^^^^^
+  File "/home/kene/Code/Data-Epic/fintech_db_design/.venv/lib/python3.13/site-packages/sqlalchemy/orm/mapper.py", line 2734, in _post_inspect
+    self._check_configure()
+    ~~~~~~~~~~~~~~~~~~~~~^^
+  File "/home/kene/Code/Data-Epic/fintech_db_design/.venv/lib/python3.13/site-packages/sqlalchemy/orm/mapper.py", line 2411, in _check_configure
+    _configure_registries({self.registry}, cascade=True)
+    ~~~~~~~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/home/kene/Code/Data-Epic/fintech_db_design/.venv/lib/python3.13/site-packages/sqlalchemy/orm/mapper.py", line 4228, in _configure_registries
+    _do_configure_registries(registries, cascade)
+    ~~~~~~~~~~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^
+  File "/home/kene/Code/Data-Epic/fintech_db_design/.venv/lib/python3.13/site-packages/sqlalchemy/orm/mapper.py", line 4265, in _do_configure_registries
+    raise e
+sqlalchemy.exc.InvalidRequestError: One or more mappers failed to initialize - can't proceed with initialization of other mappers. Triggering mapper: 'Mapper[WalletAddress(wallet_addresses)]'. Original exception was: Could not determine join condition between parent/child tables on relationship WalletAddress.transaction - there are multiple foreign key paths linking the tables.  Specify the 'foreign_keys' argument, providing a list of those columns which should be counted as containing a foreign key reference to the parent table.
+2026-08-16 03:41:19,054 - fintech_app - ERROR - Error fetching User with ID 2000000000: One or more mappers failed to initialize - can't proceed with initialization of other mappers. Triggering mapper: 'Mapper[WalletAddress(wallet_addresses)]'. Original exception was: Could not determine join condition between parent/child tables on relationship WalletAddress.transaction - there are multiple foreign key paths linking the tables.  Specify the 'foreign_keys' argument, providing a list of those columns which should be counted as containing a foreign key reference to the parent table.
+Traceback (most recent call last):
+  File "/home/kene/Code/Data-Epic/fintech_db_design/repositories/repository.py", line 44, in get_by_id
+    record = self.session.get(self.model_cls, record_id)
+  File "/home/kene/Code/Data-Epic/fintech_db_design/.venv/lib/python3.13/site-packages/sqlalchemy/orm/session.py", line 3702, in get
+    return self._get_impl(
+           ~~~~~~~~~~~~~~^
+        entity,
+        ^^^^^^^
+    ...<7 lines>...
+        bind_arguments=bind_arguments,
+        ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+    )
+    ^
+  File "/home/kene/Code/Data-Epic/fintech_db_design/.venv/lib/python3.13/site-packages/sqlalchemy/orm/session.py", line 3881, in _get_impl
+    return db_load_fn(
+        self,
+    ...<5 lines>...
+        bind_arguments=bind_arguments,
+    )
+  File "/home/kene/Code/Data-Epic/fintech_db_design/.venv/lib/python3.13/site-packages/sqlalchemy/orm/loading.py", line 695, in load_on_pk_identity
+    session.execute(
+    ~~~~~~~~~~~~~~~^
+        q,
+        ^^
+    ...<2 lines>...
+        bind_arguments=bind_arguments,
+        ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+    )
+    ^
+  File "/home/kene/Code/Data-Epic/fintech_db_design/.venv/lib/python3.13/site-packages/sqlalchemy/orm/session.py", line 2373, in execute
+    return self._execute_internal(
+           ~~~~~~~~~~~~~~~~~~~~~~^
+        statement,
+        ^^^^^^^^^^
+    ...<4 lines>...
+        _add_event=_add_event,
+        ^^^^^^^^^^^^^^^^^^^^^^
+    )
+    ^
+  File "/home/kene/Code/Data-Epic/fintech_db_design/.venv/lib/python3.13/site-packages/sqlalchemy/orm/session.py", line 2271, in _execute_internal
+    result: Result[Any] = compile_state_cls.orm_execute_statement(
+                          ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~^
+        self,
+        ^^^^^
+    ...<4 lines>...
+        conn,
+        ^^^^^
+    )
+    ^
+  File "/home/kene/Code/Data-Epic/fintech_db_design/.venv/lib/python3.13/site-packages/sqlalchemy/orm/context.py", line 306, in orm_execute_statement
+    result = conn.execute(
+        statement, params or {}, execution_options=execution_options
+    )
+  File "/home/kene/Code/Data-Epic/fintech_db_design/.venv/lib/python3.13/site-packages/sqlalchemy/engine/base.py", line 1421, in execute
+    return meth(
+        self,
+        distilled_parameters,
+        execution_options or NO_OPTIONS,
+    )
+  File "/home/kene/Code/Data-Epic/fintech_db_design/.venv/lib/python3.13/site-packages/sqlalchemy/sql/elements.py", line 526, in _execute_on_connection
+    return connection._execute_clauseelement(
+           ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~^
+        self, distilled_params, execution_options
+        ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+    )
+    ^
+  File "/home/kene/Code/Data-Epic/fintech_db_design/.venv/lib/python3.13/site-packages/sqlalchemy/engine/base.py", line 1635, in _execute_clauseelement
+    compiled_sql, extracted_params, cache_hit = elem._compile_w_cache(
+                                                ~~~~~~~~~~~~~~~~~~~~~^
+        dialect=dialect,
+        ^^^^^^^^^^^^^^^^
+    ...<4 lines>...
+        linting=self.dialect.compiler_linting | compiler.WARN_LINTING,
+        ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+    )
+    ^
+  File "/home/kene/Code/Data-Epic/fintech_db_design/.venv/lib/python3.13/site-packages/sqlalchemy/sql/elements.py", line 715, in _compile_w_cache
+    compiled_sql = self._compiler(
+        dialect,
+    ...<4 lines>...
+        **kw,
+    )
+  File "/home/kene/Code/Data-Epic/fintech_db_design/.venv/lib/python3.13/site-packages/sqlalchemy/sql/elements.py", line 323, in _compiler
+    return dialect.statement_compiler(dialect, self, **kw)
+           ~~~~~~~~~~~~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^
+  File "/home/kene/Code/Data-Epic/fintech_db_design/.venv/lib/python3.13/site-packages/sqlalchemy/sql/compiler.py", line 1462, in __init__
+    Compiled.__init__(self, dialect, statement, **kwargs)
+    ~~~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/home/kene/Code/Data-Epic/fintech_db_design/.venv/lib/python3.13/site-packages/sqlalchemy/sql/compiler.py", line 902, in __init__
+    self.string = self.process(self.statement, **compile_kwargs)
+                  ~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/home/kene/Code/Data-Epic/fintech_db_design/.venv/lib/python3.13/site-packages/sqlalchemy/sql/compiler.py", line 948, in process
+    return obj._compiler_dispatch(self, **kwargs)
+           ~~~~~~~~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^
+  File "/home/kene/Code/Data-Epic/fintech_db_design/.venv/lib/python3.13/site-packages/sqlalchemy/sql/visitors.py", line 138, in _compiler_dispatch
+    return meth(self, **kw)  # type: ignore  # noqa: E501
+  File "/home/kene/Code/Data-Epic/fintech_db_design/.venv/lib/python3.13/site-packages/sqlalchemy/sql/compiler.py", line 4811, in visit_select
+    compile_state = select_stmt._compile_state_factory(
+        select_stmt, self, **kwargs
+    )
+  File "/home/kene/Code/Data-Epic/fintech_db_design/.venv/lib/python3.13/site-packages/sqlalchemy/sql/base.py", line 774, in create_for_statement
+    return klass.create_for_statement(statement, compiler, **kw)
+           ~~~~~~~~~~~~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/home/kene/Code/Data-Epic/fintech_db_design/.venv/lib/python3.13/site-packages/sqlalchemy/orm/context.py", line 447, in create_for_statement
+    return cls._create_orm_context(
+           ~~~~~~~~~~~~~~~~~~~~~~~^
+        cast("Union[Select, FromStatement]", statement),
+        ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+    ...<2 lines>...
+        **kw,
+        ^^^^^
+    )
+    ^
+  File "/home/kene/Code/Data-Epic/fintech_db_design/.venv/lib/python3.13/site-packages/sqlalchemy/orm/context.py", line 1175, in _create_orm_context
+    _QueryEntity.to_compile_state(
+    ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~^
+        self,
+        ^^^^^
+    ...<2 lines>...
+        is_current_entities=True,
+        ^^^^^^^^^^^^^^^^^^^^^^^^^
+    )
+    ^
+  File "/home/kene/Code/Data-Epic/fintech_db_design/.venv/lib/python3.13/site-packages/sqlalchemy/orm/context.py", line 2628, in to_compile_state
+    _MapperEntity(
+    ~~~~~~~~~~~~~^
+        compile_state,
+        ^^^^^^^^^^^^^^
+    ...<2 lines>...
+        is_current_entities,
+        ^^^^^^^^^^^^^^^^^^^^
+    )
+    ^
+  File "/home/kene/Code/Data-Epic/fintech_db_design/.venv/lib/python3.13/site-packages/sqlalchemy/orm/context.py", line 2708, in __init__
+    entity._post_inspect
+  File "/home/kene/Code/Data-Epic/fintech_db_design/.venv/lib/python3.13/site-packages/sqlalchemy/util/langhelpers.py", line 1234, in __get__
+    obj.__dict__[self.__name__] = result = self.fget(obj)
+                                           ~~~~~~~~~^^^^^
+  File "/home/kene/Code/Data-Epic/fintech_db_design/.venv/lib/python3.13/site-packages/sqlalchemy/orm/mapper.py", line 2734, in _post_inspect
+    self._check_configure()
+    ~~~~~~~~~~~~~~~~~~~~~^^
+  File "/home/kene/Code/Data-Epic/fintech_db_design/.venv/lib/python3.13/site-packages/sqlalchemy/orm/mapper.py", line 2411, in _check_configure
+    _configure_registries({self.registry}, cascade=True)
+    ~~~~~~~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/home/kene/Code/Data-Epic/fintech_db_design/.venv/lib/python3.13/site-packages/sqlalchemy/orm/mapper.py", line 4228, in _configure_registries
+    _do_configure_registries(registries, cascade)
+    ~~~~~~~~~~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^
+  File "/home/kene/Code/Data-Epic/fintech_db_design/.venv/lib/python3.13/site-packages/sqlalchemy/orm/mapper.py", line 4265, in _do_configure_registries
+    raise e
+sqlalchemy.exc.InvalidRequestError: One or more mappers failed to initialize - can't proceed with initialization of other mappers. Triggering mapper: 'Mapper[WalletAddress(wallet_addresses)]'. Original exception was: Could not determine join condition between parent/child tables on relationship WalletAddress.transaction - there are multiple foreign key paths linking the tables.  Specify the 'foreign_keys' argument, providing a list of those columns which should be counted as containing a foreign key reference to the parent table.
+2026-08-16 03:44:03,048 - fintech_app - ERROR - Error during transfer: type object 'TransactionStatusType' has no attribute 'COMPLETED'
+Traceback (most recent call last):
+  File "/home/kene/Code/Data-Epic/fintech_db_design/repositories/repository.py", line 163, in transfer
+    status=TransactionStatusType.COMPLETED
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+AttributeError: type object 'TransactionStatusType' has no attribute 'COMPLETED'
+2026-08-16 03:44:51,269 - fintech_app - ERROR - Error during transfer: (sqlite3.IntegrityError) NOT NULL constraint failed: transactions.user_id
+[SQL: INSERT INTO transactions (user_id, sender_wallet, recipient_wallet, transaction_hash, amount, fee, status) VALUES (?, ?, ?, ?, ?, ?, ?) RETURNING id, timestamp]
+[parameters: (None, 'address1', 'address2', None, 200.0, None, 'CONFIRMED')]
+(Background on this error at: https://sqlalche.me/e/20/gkpj)
+Traceback (most recent call last):
+  File "/home/kene/Code/Data-Epic/fintech_db_design/.venv/lib/python3.13/site-packages/sqlalchemy/engine/base.py", line 1969, in _exec_single_context
+    self.dialect.do_execute(
+    ~~~~~~~~~~~~~~~~~~~~~~~^
+        cursor, str_statement, effective_parameters, context
+        ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+    )
+    ^
+  File "/home/kene/Code/Data-Epic/fintech_db_design/.venv/lib/python3.13/site-packages/sqlalchemy/engine/default.py", line 952, in do_execute
+    cursor.execute(statement, parameters)
+    ~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^
+sqlite3.IntegrityError: NOT NULL constraint failed: transactions.user_id
+
+The above exception was the direct cause of the following exception:
+
+Traceback (most recent call last):
+  File "/home/kene/Code/Data-Epic/fintech_db_design/repositories/repository.py", line 166, in transfer
+    self.session.commit()
+    ~~~~~~~~~~~~~~~~~~~^^
+  File "/home/kene/Code/Data-Epic/fintech_db_design/.venv/lib/python3.13/site-packages/sqlalchemy/orm/session.py", line 2035, in commit
+    trans.commit(_to_root=True)
+    ~~~~~~~~~~~~^^^^^^^^^^^^^^^
+  File "<string>", line 2, in commit
+  File "/home/kene/Code/Data-Epic/fintech_db_design/.venv/lib/python3.13/site-packages/sqlalchemy/orm/state_changes.py", line 137, in _go
+    ret_value = fn(self, *arg, **kw)
+  File "/home/kene/Code/Data-Epic/fintech_db_design/.venv/lib/python3.13/site-packages/sqlalchemy/orm/session.py", line 1316, in commit
+    self._prepare_impl()
+    ~~~~~~~~~~~~~~~~~~^^
+  File "<string>", line 2, in _prepare_impl
+  File "/home/kene/Code/Data-Epic/fintech_db_design/.venv/lib/python3.13/site-packages/sqlalchemy/orm/state_changes.py", line 137, in _go
+    ret_value = fn(self, *arg, **kw)
+  File "/home/kene/Code/Data-Epic/fintech_db_design/.venv/lib/python3.13/site-packages/sqlalchemy/orm/session.py", line 1290, in _prepare_impl
+    self.session.flush()
+    ~~~~~~~~~~~~~~~~~~^^
+  File "/home/kene/Code/Data-Epic/fintech_db_design/.venv/lib/python3.13/site-packages/sqlalchemy/orm/session.py", line 4353, in flush
+    self._flush(objects)
+    ~~~~~~~~~~~^^^^^^^^^
+  File "/home/kene/Code/Data-Epic/fintech_db_design/.venv/lib/python3.13/site-packages/sqlalchemy/orm/session.py", line 4488, in _flush
+    with util.safe_reraise():
+         ~~~~~~~~~~~~~~~~~^^
+  File "/home/kene/Code/Data-Epic/fintech_db_design/.venv/lib/python3.13/site-packages/sqlalchemy/util/langhelpers.py", line 122, in __exit__
+    raise exc_value.with_traceback(exc_tb)
+  File "/home/kene/Code/Data-Epic/fintech_db_design/.venv/lib/python3.13/site-packages/sqlalchemy/orm/session.py", line 4449, in _flush
+    flush_context.execute()
+    ~~~~~~~~~~~~~~~~~~~~~^^
+  File "/home/kene/Code/Data-Epic/fintech_db_design/.venv/lib/python3.13/site-packages/sqlalchemy/orm/unitofwork.py", line 465, in execute
+    rec.execute(self)
+    ~~~~~~~~~~~^^^^^^
+  File "/home/kene/Code/Data-Epic/fintech_db_design/.venv/lib/python3.13/site-packages/sqlalchemy/orm/unitofwork.py", line 641, in execute
+    util.preloaded.orm_persistence.save_obj(
+    ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~^
+        self.mapper,
+        ^^^^^^^^^^^^
+        uow.states_for_mapper_hierarchy(self.mapper, False, False),
+        ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+        uow,
+        ^^^^
+    )
+    ^
+  File "/home/kene/Code/Data-Epic/fintech_db_design/.venv/lib/python3.13/site-packages/sqlalchemy/orm/persistence.py", line 94, in save_obj
+    _emit_insert_statements(
+    ~~~~~~~~~~~~~~~~~~~~~~~^
+        base_mapper,
+        ^^^^^^^^^^^^
+    ...<3 lines>...
+        insert,
+        ^^^^^^^
+    )
+    ^
+  File "/home/kene/Code/Data-Epic/fintech_db_design/.venv/lib/python3.13/site-packages/sqlalchemy/orm/persistence.py", line 1234, in _emit_insert_statements
+    result = connection.execute(
+        statement,
+        params,
+        execution_options=execution_options,
+    )
+  File "/home/kene/Code/Data-Epic/fintech_db_design/.venv/lib/python3.13/site-packages/sqlalchemy/engine/base.py", line 1421, in execute
+    return meth(
+        self,
+        distilled_parameters,
+        execution_options or NO_OPTIONS,
+    )
+  File "/home/kene/Code/Data-Epic/fintech_db_design/.venv/lib/python3.13/site-packages/sqlalchemy/sql/elements.py", line 526, in _execute_on_connection
+    return connection._execute_clauseelement(
+           ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~^
+        self, distilled_params, execution_options
+        ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+    )
+    ^
+  File "/home/kene/Code/Data-Epic/fintech_db_design/.venv/lib/python3.13/site-packages/sqlalchemy/engine/base.py", line 1643, in _execute_clauseelement
+    ret = self._execute_context(
+        dialect,
+    ...<8 lines>...
+        cache_hit=cache_hit,
+    )
+  File "/home/kene/Code/Data-Epic/fintech_db_design/.venv/lib/python3.13/site-packages/sqlalchemy/engine/base.py", line 1848, in _execute_context
+    return self._exec_single_context(
+           ~~~~~~~~~~~~~~~~~~~~~~~~~^
+        dialect, context, statement, parameters
+        ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+    )
+    ^
+  File "/home/kene/Code/Data-Epic/fintech_db_design/.venv/lib/python3.13/site-packages/sqlalchemy/engine/base.py", line 1988, in _exec_single_context
+    self._handle_dbapi_exception(
+    ~~~~~~~~~~~~~~~~~~~~~~~~~~~~^
+        e, str_statement, effective_parameters, cursor, context
+        ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+    )
+    ^
+  File "/home/kene/Code/Data-Epic/fintech_db_design/.venv/lib/python3.13/site-packages/sqlalchemy/engine/base.py", line 2365, in _handle_dbapi_exception
+    raise sqlalchemy_exception.with_traceback(exc_info[2]) from e
+  File "/home/kene/Code/Data-Epic/fintech_db_design/.venv/lib/python3.13/site-packages/sqlalchemy/engine/base.py", line 1969, in _exec_single_context
+    self.dialect.do_execute(
+    ~~~~~~~~~~~~~~~~~~~~~~~^
+        cursor, str_statement, effective_parameters, context
+        ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+    )
+    ^
+  File "/home/kene/Code/Data-Epic/fintech_db_design/.venv/lib/python3.13/site-packages/sqlalchemy/engine/default.py", line 952, in do_execute
+    cursor.execute(statement, parameters)
+    ~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^
+sqlalchemy.exc.IntegrityError: (sqlite3.IntegrityError) NOT NULL constraint failed: transactions.user_id
+[SQL: INSERT INTO transactions (user_id, sender_wallet, recipient_wallet, transaction_hash, amount, fee, status) VALUES (?, ?, ?, ?, ?, ?, ?) RETURNING id, timestamp]
+[parameters: (None, 'address1', 'address2', None, 200.0, None, 'CONFIRMED')]
+(Background on this error at: https://sqlalche.me/e/20/gkpj)
